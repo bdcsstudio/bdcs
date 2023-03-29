@@ -1,0 +1,6 @@
+body [page-transition="component"] {
+  display: block;
+}
+.w-editor [page-transition="component"] {
+  display: none;
+}
