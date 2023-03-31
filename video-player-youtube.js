@@ -49,6 +49,14 @@ $(document).ready(function () {
             video.pause();
           }
         });
+
+      // Handle the escape key press event
+      $(document).keydown(function (e) {
+        if (e.key === "Escape" && $(this).is('[youtube-close="true"]')) {
+          e.preventDefault();
+          video.src = "";
+        }
+      });
     });
   }
 });
