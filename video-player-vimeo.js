@@ -49,3 +49,13 @@ $("[vimeo-player='true'] [vimeo-embed='true']").each(function () {
       });
     });
 });
+
+// Functie om de Escape-toetsdetectie af te handelen
+function handleEscapeKey(event) {
+  if (event.key === "Escape" || event.keyCode === 27) {
+    $("[vimeo-player='true'] [vimeo-close=true]").click();
+  }
+}
+
+// Event listener toevoegen om te luisteren naar keydown-events
+$(document).on("keydown", handleEscapeKey);
