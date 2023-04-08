@@ -1,4 +1,3 @@
-
   document.addEventListener("DOMContentLoaded", function() {
     const navSpotlightItems = document.querySelectorAll('[nav-spotlight-list="true"] [nav-spotlight-item="true"]');
 
