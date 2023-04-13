@@ -1,6 +1,6 @@
-// GSAP Marquee Attributes
+// MARQUEE POWER-UP
 window.addEventListener("DOMContentLoaded", (event) => {
-  // Attribute value checker
+  // attribute value checker
   function attr(defaultVal, attrVal) {
     const defaultValType = typeof defaultVal;
     if (typeof attrVal !== "string" || attrVal.trim() === "") return defaultVal;
@@ -10,28 +10,41 @@ window.addEventListener("DOMContentLoaded", (event) => {
     if (!isNaN(attrVal) && defaultValType === "number") return +attrVal;
     return defaultVal;
   }
-  // Get speed attribute based on viewport width
-  function getSpeedAttr(componentEl) {
+
+  // function to get the speed based on screen width
+  function getSpeed(componentEl) {
     const screenWidth = window.innerWidth;
-    if (screenWidth <= 479) {
-      return attr(100, componentEl.attr("mrq-speed-mobile"));
-    } else if (screenWidth >= 480 && screenWidth <= 991) {
-      return attr(100, componentEl.attr("mrq-speed-tablet"));
+    const desktopSpeed = attr(100, componentEl.attr("mrq-speed-desktop"));
+    const tabletSpeed = componentEl.attr("mrq-speed-tablet") ? attr(100, componentEl.attr("mrq-speed-tablet")) : desktopSpeed;
+    const mobileSpeed = componentEl.attr("mrq-speed-mobile") ? attr(100, componentEl.attr("mrq-speed-mobile")) : desktopSpeed;
+
+    if (screenWidth >= 992) {
+      return desktopSpeed;
+    } else if (screenWidth >= 480 && screenWidth < 992) {
+      return tabletSpeed;
     } else {
-      return attr(100, componentEl.attr("mrq-speed-desktop"));
+      return mobileSpeed;
     }
   }
-  // Marquee component
+
+  // marquee component
   $("[mrq='marquee']").each(function (index) {
     let componentEl = $(this),
       panelEl = componentEl.find("[mrq='list']"),
+      // Pauses the animation on hover
       triggerHoverEl = componentEl.find("[mrq-pause='hover']"),
+      // Pauses the animation on click
       triggerClickEl = componentEl.find("[mrq-pause='click']");
-    let speedSetting = getSpeedAttr(componentEl),
+    // Determines the animation speed dynamically
+    let speedSetting = getSpeed(componentEl),
+      // Change the default direction to Vertical
       verticalSetting = attr(false, componentEl.attr("mrq-vertical")),
+      // Reverses the default animation direction
       reverseSetting = attr(false, componentEl.attr("mrq-reversed")),
-      scrollDirectionSetting = attr(false, componentEl.attr("mrq-horizontal")),
-      scrollScrubSetting = attr(false, componentEl.attr("mrq-scroll")),
+      // Flips the direction on scroll
+      scrollDirectionSetting = attr(false, componentEl.attr("mrq-scroll-flip")),
+      // Accelerates the animation speed on scroll
+      scrollScrubSetting = attr(false, componentEl.attr("mrq-scroll-scrub")),
       moveDistanceSetting = -100,
       timeScaleSetting = 1,
       pausedStateSetting = false;
@@ -55,7 +68,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
         { xPercent: moveDistanceSetting, ease: "none", duration: speedSetting }
       );
     }
-    let scrubObject = { value: 1 };
+		let scrubObject = { value: 1 };
     ScrollTrigger.create({
       trigger: "body",
       start: "top top",
@@ -69,11 +82,14 @@ window.addEventListener("DOMContentLoaded", (event) => {
           if (scrollScrubSetting) {
             let v = self.getVelocity() * 0.006;
             v = gsap.utils.clamp(-60, 60, v);
-            gsap.to(scrubObject, {
-              value: v,
-              duration: 0.5,
+            let scrubTimeline = gsap.timeline({
               onUpdate: () => marqueeTimeline.timeScale(scrubObject.value)
             });
+            scrubTimeline.fromTo(
+              scrubObject,
+              { value: v },
+              { value: timeScaleSetting, duration: 0.5 }
+            );
           }
         }
       }
