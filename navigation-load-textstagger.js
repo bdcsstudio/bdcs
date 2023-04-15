@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const navTrigger = document.querySelector("[nav-trigger='true']");
 
   // Vind de tekst-elementen die geanimeerd moeten worden
-  const textSplitElements = document.querySelectorAll("[text-split], [nav-text]");
+  const textSplitElements = document.querySelectorAll("[nav-load-textstagger]");
 
   // Maak een array om de GSAP timelines op te slaan
   const textAnimations = [];
