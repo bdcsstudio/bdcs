@@ -19,7 +19,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
         // Pauses the animation on click 
       triggerClickEl = componentEl.find("[mrq-pause='click']");  
         // Determines the animation speed dynamically
-    let speedSetting = attr(100, componentEl.attr("tr-marquee-speed")),
+    let speedSetting = attr(100, componentEl.attr("mrq-speed")),
         // Vertical Marquee
       verticalSetting = attr(false, componentEl.attr("mrq-vertical")),
         // Reverses the default animation direction
@@ -68,7 +68,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
         pauseTimeline.fromTo(pauseObject, { value: timeScaleSetting }, { value: 0, duration: 0.6 });
         triggerClickEl.addClass("is-paused");
       } else {
-        pauseTimeline.fromTo(pauseObject, { value: 0 }, { value: timeScaleSetting, duration: 0.5 });
+        pauseTimeline.fromTo(pauseObject, { value: 0 }, { value: timeScaleSetting, duration: 0.6 });
         triggerClickEl.removeClass("is-paused");
       }
     }
