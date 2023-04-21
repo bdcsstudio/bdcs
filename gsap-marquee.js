@@ -55,7 +55,7 @@ window.addEventListener("DOMContentLoaded", (event) => {
             let v = self.getVelocity() * 0.006;
             v = gsap.utils.clamp(-60, 60, v);
             let scrubTimeline = gsap.timeline({ onUpdate: () => marqueeTimeline.timeScale(scrubObject.value) });
-            scrubTimeline.fromTo(scrubObject, { value: v }, { value: timeScaleSetting, duration: 0.5 });
+            scrubTimeline.fromTo(scrubObject, { value: v }, { value: timeScaleSetting, duration: 0.6 });
           }
         }
       }
