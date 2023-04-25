@@ -14,31 +14,42 @@ window.addEventListener("DOMContentLoaded", (event) => {
   $("[mrq='marquee']").each(function (index) {
     let componentEl = $(this),
       panelEl = componentEl.find("[mrq='list']"),
-        // Pauses the animation on hover   
+      // Pauses the animation on hover
       triggerHoverEl = componentEl.find("[mrq-pause='hover']"),
-        // Pauses the animation on click 
-      triggerClickEl = componentEl.find("[mrq-pause='click']");  
-        // Determines the animation speed dynamically
+      // Pauses the animation on click
+      triggerClickEl = componentEl.find("[mrq-pause='click']");
+    // Determines the animation speed dynamically
     let speedSetting = attr(100, componentEl.attr("mrq-speed")),
-        // Vertical Marquee
+      // Vertical Marquee
       verticalSetting = attr(false, componentEl.attr("mrq-vertical")),
-        // Reverses the default animation direction
+      // Reverses the default animation direction
       reverseSetting = attr(false, componentEl.attr("mrq-reversed")),
-        // Flips the direction on scroll
+      // Flips the direction on scroll
       scrollDirectionSetting = attr(false, componentEl.attr("mrq-scroll-flip")),
-        // Accelerates the animation speed on scroll    
+      // Accelerates the animation speed on scroll
       scrollScrubSetting = attr(false, componentEl.attr("mrq-scroll-scrub")),
       moveDistanceSetting = -100,
       timeScaleSetting = 1,
       pausedStateSetting = false;
     if (reverseSetting) moveDistanceSetting = 100;
-    let marqueeTimeline = gsap.timeline({ repeat: -1, onReverseComplete: () => marqueeTimeline.progress(1) });
+    let marqueeTimeline = gsap.timeline({
+      repeat: -1,
+      onReverseComplete: () => marqueeTimeline.progress(1)
+    });
     if (verticalSetting) {
       speedSetting = panelEl.first().height() / speedSetting;
-      marqueeTimeline.fromTo(panelEl, { yPercent: 0 }, { yPercent: moveDistanceSetting, ease: "none", duration: speedSetting });
+      marqueeTimeline.fromTo(
+        panelEl,
+        { yPercent: 0 },
+        { yPercent: moveDistanceSetting, ease: "none", duration: speedSetting }
+      );
     } else {
       speedSetting = panelEl.first().width() / speedSetting;
-      marqueeTimeline.fromTo(panelEl, { xPercent: 0 }, { xPercent: moveDistanceSetting, ease: "none", duration: speedSetting });
+      marqueeTimeline.fromTo(
+        panelEl,
+        { xPercent: 0 },
+        { xPercent: moveDistanceSetting, ease: "none", duration: speedSetting }
+      );
     }
     let scrubObject = { value: 1 };
     ScrollTrigger.create({
@@ -54,8 +65,14 @@ window.addEventListener("DOMContentLoaded", (event) => {
           if (scrollScrubSetting) {
             let v = self.getVelocity() * 0.006;
             v = gsap.utils.clamp(-60, 60, v);
-            let scrubTimeline = gsap.timeline({ onUpdate: () => marqueeTimeline.timeScale(scrubObject.value) });
-            scrubTimeline.fromTo(scrubObject, { value: v }, { value: timeScaleSetting, duration: 0.6 });
+            let scrubTimeline = gsap.timeline({
+              onUpdate: () => marqueeTimeline.timeScale(scrubObject.value)
+            });
+            scrubTimeline.fromTo(
+              scrubObject,
+              { value: v },
+              { value: timeScaleSetting, duration: 0.6 }
+            );
           }
         }
       }
@@ -63,12 +80,22 @@ window.addEventListener("DOMContentLoaded", (event) => {
     function pauseMarquee(isPausing) {
       pausedStateSetting = isPausing;
       let pauseObject = { value: 1 };
-      let pauseTimeline = gsap.timeline({ onUpdate: () => marqueeTimeline.timeScale(pauseObject.value) });
+      let pauseTimeline = gsap.timeline({
+        onUpdate: () => marqueeTimeline.timeScale(pauseObject.value)
+      });
       if (isPausing) {
-        pauseTimeline.fromTo(pauseObject, { value: timeScaleSetting }, { value: 0, duration: 0.6 });
+        pauseTimeline.fromTo(
+          pauseObject,
+          { value: timeScaleSetting },
+          { value: 0, duration: 0.6 }
+        );
         triggerClickEl.addClass("is-paused");
       } else {
-        pauseTimeline.fromTo(pauseObject, { value: 0 }, { value: timeScaleSetting, duration: 0.6 });
+        pauseTimeline.fromTo(
+          pauseObject,
+          { value: 0 },
+          { value: timeScaleSetting, duration: 0.6 }
+        );
         triggerClickEl.removeClass("is-paused");
       }
     }
