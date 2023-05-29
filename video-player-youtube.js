@@ -5,6 +5,9 @@ $(document).ready(function () {
     youtubePlayer.find('[youtube-embed="true"]').each(function () {
       var video = $(this).children("iframe").get(0);
       var src = video.src;
+      var closeButton = $(this)
+        .closest("[youtube-player='true']")
+        .find('[youtube-close="true"]'); // Nieuwe regel
 
       // Handle open and close events
       $(this)
@@ -15,13 +18,11 @@ $(document).ready(function () {
           var autoplaySrc = src + "?autoplay=1";
           video.src = autoplaySrc;
         });
-      $(this)
-        .closest("[youtube-player='true']")
-        .find('[youtube-close="true"]')
-        .click(function (e) {
-          e.preventDefault();
-          video.src = "";
-        });
+      closeButton.click(function (e) {
+        // Veranderd
+        e.preventDefault();
+        video.src = "";
+      });
 
       // Handle play, pause, and toggle events
       $(this)
@@ -52,9 +53,9 @@ $(document).ready(function () {
 
       // Handle the escape key press event
       $(document).keydown(function (e) {
-        if (e.key === "Escape" && $(this).is('[youtube-close="true"]')) {
+        if (e.key === "Escape") {
           e.preventDefault();
-          video.src = "";
+          closeButton.click(); // Trigger de click event van de sluitknop
         }
       });
     });
