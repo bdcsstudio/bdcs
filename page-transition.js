@@ -2,8 +2,13 @@
 function internalLink(myLink) {
   return myLink.host == window.location.host;
 }
+
+function isSamePage(myLink) {
+  return myLink.pathname == window.location.pathname;
+}
+
 $("a").each(function () {
-  if (internalLink(this) && this.href.indexOf("#") === -1) {
+  if (internalLink(this) && !isSamePage(this) && this.href.indexOf("#") === -1) {
     $(this).click(function (e) {
       e.preventDefault();
       var moduleURL = jQuery(this).attr("href");
