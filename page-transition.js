@@ -3,12 +3,12 @@ function internalLink(myLink) {
   return myLink.host == window.location.host;
 }
 
-function isSamePage(myLink) {
-  return myLink.pathname == window.location.pathname;
-}
-
 $("a").each(function () {
-  if (internalLink(this) && !isSamePage(this) && this.href.indexOf("#") === -1) {
+  if (
+    internalLink(this) &&
+    this.href.indexOf("#") === -1 &&
+    $(this).attr("page-transition") !== "ignore"
+  ) {
     $(this).click(function (e) {
       e.preventDefault();
       var moduleURL = jQuery(this).attr("href");
@@ -17,7 +17,7 @@ $("a").each(function () {
         window.location = moduleURL;
       }, transitionTime);
 
-      // Class that has page out interaction tied to click
+      // Attribute that has page out interaction tied to click
       $('[page-transition="component"]').click();
 
       // Trigger custom event for GSAP interaction
