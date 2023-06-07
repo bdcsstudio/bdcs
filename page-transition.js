@@ -1,14 +1,16 @@
-// Works on internal links, ignores external links or links containing #
 function internalLink(myLink) {
-  return myLink.host == window.location.host;
+  // Check if the value of 'page-transition' is 'ignore'
+  var pageTransition = $(myLink).attr("page-transition");
+  if (pageTransition === "ignore") {
+    return false;
+  }
+
+  // Return normal host and '#' check
+  return myLink.host == window.location.host && myLink.href.indexOf("#") === -1;
 }
 
 $("a").each(function () {
-  if (
-    internalLink(this) &&
-    this.href.indexOf("#") === -1 &&
-    $(this).attr("page-transition") !== "ignore"
-  ) {
+  if (internalLink(this)) {
     $(this).click(function (e) {
       e.preventDefault();
       var moduleURL = jQuery(this).attr("href");
@@ -17,7 +19,7 @@ $("a").each(function () {
         window.location = moduleURL;
       }, transitionTime);
 
-      // Attribute that has page out interaction tied to click
+      // Class that has page out interaction tied to click
       $('[page-transition="component"]').click();
 
       // Trigger custom event for GSAP interaction
