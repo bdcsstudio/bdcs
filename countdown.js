@@ -45,7 +45,15 @@ function updateCountdown() {
     var countdownItem = countdownComp.querySelector(
       `[countdown-item="${item}"]`
     );
-    if (countdownItem) countdownItem.textContent = countdownItems[item];
+    if (countdownItem) {
+      countdownItem.textContent = countdownItems[item];
+      if (countdownItems[item] === 0) {
+        var countdownWrapper = countdownItem.closest(
+          '[countdown-wrapper="true"]'
+        );
+        if (countdownWrapper) countdownWrapper.style.display = "none";
+      }
+    }
   }
 }
 
