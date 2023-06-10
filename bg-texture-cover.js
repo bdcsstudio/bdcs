@@ -88,11 +88,7 @@
       scaleX: scaleX * scale,
       scaleY: scaleY * scale,
       backgroundPosition: `${Math.random() * 100}% ${Math.random() * 100}%`,
-      width: isSmallScreen
-        ? "100vh"
-        : rotation % 180 === 0
-        ? "100%"
-        : "141.42%",
+      width: "100vw",
       height: isSmallScreen
         ? "100vh"
         : rotation % 180 === 0
